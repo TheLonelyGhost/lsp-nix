@@ -54,7 +54,7 @@ let
   sources = import ./nix/sources.nix {};
   pkgs = import sources.nixpkgs {};
 
-  lsp = (import (pkgs.fetchGitHub { inherit (sources.lsp-nix) owner repo rev sha256; })).outputs.packages."${builtings.currentSystem}";
+  lsp = (import (pkgs.fetchFromGitHub { inherit (sources.lsp-nix) owner repo rev sha256; })).outputs.packages."${builtins.currentSystem}";
 in
 {
   home.packages = [
