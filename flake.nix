@@ -53,6 +53,7 @@
             vint = pkgs.vim-vint;
 
             gopls = pkgs.gopls;
+            scry = pkgs.scry;
             nim-language-server = pkgs.nimlsp;
             bash-language-server = pkgs.nodePackages.bash-language-server;
             diagnostic-language-server = pkgs.nodePackages.diagnostic-languageserver;
