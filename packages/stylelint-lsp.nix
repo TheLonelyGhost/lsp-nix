@@ -9,5 +9,6 @@ npm.stylelint-lsp.override {
   meta = {
     description = "An implementation of the Language Server Protocol for stylelint";
     homepage = "https://github.com/bmatcuk/stylelint-lsp";
+    platforms = nodejs.meta.platforms;
   };
 }
