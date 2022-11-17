@@ -1,17 +1,19 @@
 {
   description = "Custom tools for nix-based workstations";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nixpkgs.url = "flake:nixpkgs";
+  inputs.flake-utils.url = "flake:flake-utils";
   inputs.flake-compat = {
     url = "github:edolstra/flake-compat";
     flake = false;
   };
+  inputs.overlays.url = "github:thelonelyghost/blank-overlay-nix";
 
-  outputs = { self, nixpkgs, flake-utils, flake-compat }:
+  outputs = { self, nixpkgs, flake-utils, flake-compat, overlays }:
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = import nixpkgs {
           inherit system;
+          overlays = [overlays.overlays.default];
         };
 
         # 14.x is the latest that node2nix (and others) can support due to some changes in how
