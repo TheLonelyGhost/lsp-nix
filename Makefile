@@ -1,7 +1,7 @@
 
 .PHONY: test
 test:
-	nix flake check
+	env NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 NIXPKGS_ALLOW_BROKEN=1 nix flake check --impure
 
 .PHONY: update
 update:

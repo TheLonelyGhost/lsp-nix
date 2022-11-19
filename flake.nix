@@ -13,7 +13,12 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ overlays.overlays.default ];
+          overlays = [
+            overlays.overlays.default
+            (final: prev: {
+              # crystal = {};
+            })
+          ];
         };
 
         # 14.x is the latest that node2nix (and others) can support due to some changes in how
@@ -25,24 +30,29 @@
 
       in
       {
-        devShell = pkgs.mkShell {
+        devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
             pkgs.bashInteractive
             pkgs.gnumake
             pkgs.nodePackages.node2nix
+            pkgs.nix-prefetch-git
           ];
-          buildInputs = [ ];
+          buildInputs = [];
         };
 
         packages = {
           # Managed in-repo
           dot-language-server = import ./packages/dot-language-server.nix { inherit pkgs nodejs; };
+          standard = import ./packages/standard.nix { inherit pkgs nodejs; };
           stylelint-lsp = import ./packages/stylelint-lsp.nix { inherit pkgs nodejs; };
           typescript-language-server = import ./packages/typescript-language-server.nix { inherit pkgs nodejs; };
           vim-language-server = import ./packages/vim-language-server.nix { inherit pkgs nodejs; };
           vscode-langservers-extracted = import ./packages/vscode-langservers-extracted.nix { inherit pkgs nodejs; };
 
           # Shim so we can safely version what's stable from nixpkgs
+          golangci-lint = pkgs.golangci-lint;
+          hadolint = pkgs.hadolint;
+          rubocop = pkgs.rubocop;
           eslint = pkgs.nodePackages.eslint;
           htmlhint = pkgs.nodePackages.htmlhint;
           jsonlint = pkgs.nodePackages.jsonlint;
@@ -53,6 +63,7 @@
           yamllint = pkgs.python3Packages.yamllint;
           shellcheck = pkgs.shellcheck;
           vint = pkgs.vim-vint;
+          vale = pkgs.vale;
 
           gopls = pkgs.gopls;
           scry = pkgs.scry;
