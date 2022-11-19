@@ -2,6 +2,7 @@
   "dot-language-server",
   "standard",
   "stylelint-lsp",
+  "ts-standard",
   "typescript-language-server",
   "vim-language-server",
   "vscode-langservers-extracted"

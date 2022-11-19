@@ -37,7 +37,9 @@
             pkgs.nodePackages.node2nix
             pkgs.nix-prefetch-git
           ];
-          buildInputs = [];
+          buildInputs = [
+            pkgs.python3Packages.flake8
+          ];
         };
 
         packages = {
@@ -45,14 +47,12 @@
           dot-language-server = import ./packages/dot-language-server.nix { inherit pkgs nodejs; };
           standard = import ./packages/standard.nix { inherit pkgs nodejs; };
           stylelint-lsp = import ./packages/stylelint-lsp.nix { inherit pkgs nodejs; };
+          ts-standard = import ./packages/ts-standard.nix { inherit pkgs nodejs; };
           typescript-language-server = import ./packages/typescript-language-server.nix { inherit pkgs nodejs; };
           vim-language-server = import ./packages/vim-language-server.nix { inherit pkgs nodejs; };
           vscode-langservers-extracted = import ./packages/vscode-langservers-extracted.nix { inherit pkgs nodejs; };
 
           # Shim so we can safely version what's stable from nixpkgs
-          golangci-lint = pkgs.golangci-lint;
-          hadolint = pkgs.hadolint;
-          rubocop = pkgs.rubocop;
           eslint = pkgs.nodePackages.eslint;
           htmlhint = pkgs.nodePackages.htmlhint;
           jsonlint = pkgs.nodePackages.jsonlint;
@@ -61,10 +61,18 @@
           flake8 = pkgs.python3Packages.flake8;
           flake8-import-order = pkgs.python3Packages.flake8-import-order;
           yamllint = pkgs.python3Packages.yamllint;
+
+          # linters and formatters
           shellcheck = pkgs.shellcheck;
           vint = pkgs.vim-vint;
           vale = pkgs.vale;
+          yapf = pkgs.yapf;
+          golangci-lint = pkgs.golangci-lint;
+          hadolint = pkgs.hadolint;
+          rubocop = pkgs.rubocop;
+          nix-linter = pkgs.nix-linter;
 
+          # language servers
           gopls = pkgs.gopls;
           scry = pkgs.scry;
           nim-language-server = pkgs.nimlsp;
