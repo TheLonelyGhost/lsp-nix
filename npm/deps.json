@@ -1,5 +1,6 @@
 [
   "dot-language-server",
+  "standard",
   "stylelint-lsp",
   "typescript-language-server",
   "vim-language-server",
