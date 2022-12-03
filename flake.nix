@@ -53,37 +53,21 @@
           vscode-langservers-extracted = import ./packages/vscode-langservers-extracted.nix { inherit pkgs nodejs; };
 
           # Shim so we can safely version what's stable from nixpkgs
-          eslint = pkgs.nodePackages.eslint;
-          htmlhint = pkgs.nodePackages.htmlhint;
-          jsonlint = pkgs.nodePackages.jsonlint;
-          stylelint = pkgs.nodePackages.stylelint;
-          isort = pkgs.python3Packages.isort;
-          flake8 = pkgs.python3Packages.flake8;
-          flake8-import-order = pkgs.python3Packages.flake8-import-order;
-          yamllint = pkgs.python3Packages.yamllint;
+          inherit (pkgs.python3Packages) yamllint flake8-import-order flake8 isort;
+          inherit (pkgs.nodePackages) stylelint jsonlint htmlhint eslint;
 
           # linters and formatters
-          shellcheck = pkgs.shellcheck;
+          inherit (pkgs) nix-linter rubocop hadolint yapf vale shellcheck golangci-lint;
           vint = pkgs.vim-vint;
-          vale = pkgs.vale;
-          yapf = pkgs.yapf;
-          golangci-lint = pkgs.golangci-lint;
-          hadolint = pkgs.hadolint;
-          rubocop = pkgs.rubocop;
-          nix-linter = pkgs.nix-linter;
 
           # language servers
-          gopls = pkgs.gopls;
-          scry = pkgs.scry;
+          inherit (pkgs.nodePackages) bash-language-server pyright yaml-language-server;
+          inherit (pkgs) solargraph scry gopls;
           nim-language-server = pkgs.nimlsp;
-          bash-language-server = pkgs.nodePackages.bash-language-server;
           diagnostic-language-server = pkgs.nodePackages.diagnostic-languageserver;
           dockerfile-language-server = pkgs.nodePackages.dockerfile-language-server-nodejs;
-          pyright = pkgs.nodePackages.pyright;
-          yaml-language-server = pkgs.nodePackages.yaml-language-server;
           nix-language-server = pkgs.rnix-lsp;
           rust-analyzer = pkgs.rust-analyzer-unwrapped;
-          solargraph = pkgs.solargraph;
           terraform-language-server = pkgs.terraform-ls;
         };
       }
