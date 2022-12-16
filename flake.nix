@@ -57,7 +57,7 @@
           inherit (pkgs.nodePackages) stylelint jsonlint htmlhint eslint;
 
           # linters and formatters
-          inherit (pkgs) nix-linter rubocop hadolint yapf vale shellcheck golangci-lint ruff;
+          inherit (pkgs) statix rubocop hadolint yapf vale shellcheck golangci-lint ruff;
           vint = pkgs.vim-vint;
 
           # language servers
