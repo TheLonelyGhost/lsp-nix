@@ -36,9 +36,9 @@
             pkgs.gnumake
             pkgs.nodePackages.node2nix
             pkgs.nix-prefetch-git
+            pkgs.statix
           ];
           buildInputs = [
-            pkgs.python3Packages.flake8
           ];
         };
 

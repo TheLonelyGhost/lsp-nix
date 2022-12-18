@@ -9,7 +9,7 @@ npm.ts-standard.override {
   meta = {
     description = "Standard style for TypeScript code out-of-box";
     homepage = "https://standardjs.com";
-    platforms = nodejs.meta.platforms;
+    inherit (nodejs.meta) platforms;
   };
 }
 

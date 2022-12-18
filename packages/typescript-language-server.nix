@@ -9,6 +9,6 @@ npm.typescript-language-server.override {
   meta = {
     description = "Language Server Protocol implementation for TypeScript wrapping tsserver.";
     homepage = "https://github.com/typescript-language-server/typescript-language-server";
-    platforms = nodejs.meta.platforms;
+    inherit (nodejs.meta) platforms;
   };
 }

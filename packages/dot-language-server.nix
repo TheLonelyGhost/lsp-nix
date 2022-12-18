@@ -9,6 +9,6 @@ npm.dot-language-server.override {
   meta = {
     description = "A language Server for the DOT language/Graphviz.";
     homepage = "https://github.com/nikeee/dot-language-server";
-    platforms = nodejs.meta.platforms;
+    inherit (nodejs.meta) platforms;
   };
 }
