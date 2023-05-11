@@ -38,6 +38,10 @@
             pkgs.nix-prefetch-git
             pkgs.statix
           ];
+
+          NODE2NIX = "${pkgs.nodePackages.node2nix}/bin/node2nix";
+          STATIX = "${pkgs.statix}/bin/statix";
+
           buildInputs = [
           ];
         };
