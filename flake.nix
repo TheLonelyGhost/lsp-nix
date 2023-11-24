@@ -1,7 +1,7 @@
 {
   description = "Custom tools for nix-based workstations";
   inputs = {
-    nixpkgs.url = "flake:nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11-small";
     flake-utils.url = "flake:flake-utils";
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -17,18 +17,13 @@
           inherit system;
           overlays = [
             overlays.overlays.default
-            (final: prev: {
-              # crystal = {};
-            })
           ];
         };
 
-        # 14.x is the latest that node2nix (and others) can support due to some changes in how
-        # the package-lock.json (and other resolved dependencies') versions are parsed. Update
-        # this version once we can because this is super old by now.
+        # Override here in case an older nodejs version is needed for node2nix
         #
         # @see https://github.com/nix-community/npmlock2nix/issues/45
-        nodejs = pkgs.nodejs-14_x;
+        inherit (pkgs) nodejs;
 
       in
       {

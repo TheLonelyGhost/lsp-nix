@@ -11,7 +11,8 @@ endif
 .PHONY: test
 test:
 	$(STATIX) check
-	env NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 NIXPKGS_ALLOW_BROKEN=1 $(NIX) flake check --impure
+	@# env NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 NIXPKGS_ALLOW_BROKEN=1 $(NIX) flake check --impure
+	$(NIX) flake check
 	$(NIX) build --no-link '.#golangci-lint'
 
 .PHONY: update

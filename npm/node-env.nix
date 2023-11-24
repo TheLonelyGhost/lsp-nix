@@ -4,9 +4,9 @@
 
 let
   # Workaround to cope with utillinux in Nixpkgs 20.09 and util-linux in Nixpkgs master
-  utillinux = pkgs.utillinux or pkgs.util-linux;
+  utillinux = if pkgs ? utillinux then pkgs.utillinux else pkgs.util-linux;
 
-  python = nodejs.python or python2;
+  python = if nodejs ? python then nodejs.python else python2;
 
   # Create a tar wrapper that filters all the 'Ignoring unknown extended header keyword' noise
   tarWrapper = runCommand "tarWrapper" {} ''
@@ -184,7 +184,7 @@ let
           if [ -d node_modules ]
           then
               cd node_modules
-              ${lib.concatMapStrings pinpointDependenciesOfPackage dependencies}
+              ${lib.concatMapStrings (dependency: pinpointDependenciesOfPackage dependency) dependencies}
               cd ..
           fi
         ''}
@@ -499,8 +499,8 @@ let
     stdenv.mkDerivation ({
       name = "${name}${if version == null then "" else "-${version}"}";
       buildInputs = [ tarWrapper python nodejs ]
-        ++ lib.optional stdenv.isLinux utillinux
-        ++ lib.optional stdenv.isDarwin libtool
+        ++ lib.optional (stdenv.isLinux) utillinux
+        ++ lib.optional (stdenv.isDarwin) libtool
         ++ buildInputs;
 
       inherit nodejs;
@@ -530,12 +530,15 @@ let
         then
             ln -s $out/lib/node_modules/.bin $out/bin
 
-            # Patch the shebang lines of all the executables
+            # Fixup all executables
             ls $out/bin/* | while read i
             do
                 file="$(readlink -f "$i")"
                 chmod u+rwx "$file"
-                patchShebangs "$file"
+                if isScript "$file"
+                then
+                    sed -i 's/\r$//' "$file"  # convert crlf to lf
+                fi
             done
         fi
 
@@ -559,7 +562,7 @@ let
 
       meta = {
         # default to Node.js' platforms
-        inherit (nodejs.meta) platforms;
+        platforms = nodejs.meta.platforms;
       } // meta;
     } // extraArgs);
 
@@ -588,8 +591,8 @@ let
         name = "node-dependencies-${name}${if version == null then "" else "-${version}"}";
 
         buildInputs = [ tarWrapper python nodejs ]
-          ++ lib.optional stdenv.isLinux utillinux
-          ++ lib.optional stdenv.isDarwin libtool
+          ++ lib.optional (stdenv.isLinux) utillinux
+          ++ lib.optional (stdenv.isDarwin) libtool
           ++ buildInputs;
 
         inherit dontStrip; # Stripping may fail a build for some package deployments
@@ -659,7 +662,7 @@ let
     stdenv.mkDerivation ({
       name = "node-shell-${name}${if version == null then "" else "-${version}"}";
 
-      buildInputs = [ python nodejs ] ++ lib.optional stdenv.isLinux utillinux ++ buildInputs;
+      buildInputs = [ python nodejs ] ++ lib.optional (stdenv.isLinux) utillinux ++ buildInputs;
       buildCommand = ''
         mkdir -p $out/bin
         cat > $out/bin/shell <<EOF
